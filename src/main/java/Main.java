@@ -1,29 +1,31 @@
 import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.*;
+import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException, CsvValidationException {
-        LeitorArquivoCSV leitorArquivoCSV = new LeitorArquivoCSV();
-        File arquivo = leitorArquivoCSV.lerPlanilha();
-        LeitorCSV plBling = new LeitorCSV(arquivo.getPath());
-        arquivo = leitorArquivoCSV.lerPlanilha();
-        LeitorCSV plCplug = new LeitorCSV(arquivo.getPath());
+        ArquivoCSV teste = new ArquivoCSV();
+        LeitorCSV testeLeitor = new LeitorCSV(teste.getCaminhoArquivo());
         boolean stop = false;
-        //TODO Verificar uma maneira de preencher os dados necessarios na Planilha CPLUG
+        int counter = 0;
         while(!stop){
-            Map<String, String> valorBling = plBling.proximaLinha();
-            Map<String, String> valorCplug = plCplug.proximaLinha();
-            if(valorBling == null){
-                System.out.println("A planilha chegou ao fim!");
-                //stop = true;
+            Map<String, String> nextLine = testeLeitor.proximaLinha();
+            if (nextLine == null){
+                stop = true;
                 break;
             }
-            System.out.println("Valor Bling: " + valorBling);
-            System.out.println("Valor CPLUG: " + valorCplug.keySet());
+            System.out.println(nextLine);
+            counter++;
+
         }
+        System.out.println(counter);
+
+
 
     }
-    }
-
+}

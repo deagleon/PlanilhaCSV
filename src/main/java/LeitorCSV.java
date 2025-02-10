@@ -12,14 +12,14 @@ public class LeitorCSV {
     private final CSVReaderHeaderAware leitorCSV;
     private Map<String, String> valores;
 
-    public LeitorCSV(String filePath, CSVReaderHeaderAware leitorCSV) {
-        file_path = filePath;
-        this.leitorCSV = leitorCSV;
-    }
-
     public LeitorCSV(String file_path) throws IOException {
         this.file_path = file_path;
-        this.leitorCSV = new CSVReaderHeaderAware(new FileReader(this.file_path));
+        try{
+            this.leitorCSV = new CSVReaderHeaderAware(new FileReader(this.file_path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public Map<String, String> proximaLinha() throws CsvValidationException, IOException {
@@ -48,7 +48,4 @@ public class LeitorCSV {
         return valores;
     }
 
-    public void setValores(Map<String, String> valores) {
-        this.valores = valores;
-    }
 }
