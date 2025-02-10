@@ -9,30 +9,29 @@ import java.util.Map;
 
 public class LeitorCSV {
     private final String file_path;
-    private final CSVReaderHeaderAware leitorCSV;
-    private Map<String, String> valores;
+    private final CSVReader leitorCSV;
+    private final String[] cabecalho;
 
     public LeitorCSV(String file_path) throws IOException {
         this.file_path = file_path;
         try{
-            this.leitorCSV = new CSVReaderHeaderAware(new FileReader(this.file_path));
-        } catch (IOException e) {
+            this.leitorCSV = new CSVReader(new FileReader(this.file_path));
+            this.cabecalho = this.leitorCSV.readNext();
+        } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    public Map<String, String> proximaLinha() throws CsvValidationException, IOException {
-       this.valores = this.leitorCSV.readMap();
-        return this.valores;
+    public String[] proximaLinha() throws CsvValidationException, IOException {
+        return this.leitorCSV.readNext();
     }
 
     @Override
     public String toString() {
         return "LeitorCSV{" +
                 "file_path='" + file_path + '\'' +
-                ", leitorCSV=" + leitorCSV +
-                ", valores=" + valores +
+                ", leitorCSV=" + leitorCSV.toString() +
                 '}';
     }
 
@@ -40,12 +39,12 @@ public class LeitorCSV {
         return file_path;
     }
 
-    public CSVReaderHeaderAware getLeitorCSV() {
+    public CSVReader getLeitorCSV() {
         return leitorCSV;
     }
 
-    public Map<String, String> getValores() {
-        return valores;
+    public String[] getCabecalho() {
+        return cabecalho;
     }
 
 }
